@@ -57,12 +57,4 @@ public class OscarsWinners {
                 ", sex='" + sex.getDescription() + '\'' +
                 '}';
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        OscarsWinners that = (OscarsWinners) obj;
-        return this.name.equals(that.getName());
-    }
 }
