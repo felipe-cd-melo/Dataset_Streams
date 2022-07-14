@@ -2,6 +2,7 @@ package services;
 
 import model.OscarsWinners;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class OscarService {
         .forEach(o -> System.out.println(o.toString()));
     }
 
-    public void printYoungest() {
+  public void printYoungest1() {
         var youngestActor = oscarsData.stream()
                 .min(Comparator.comparing(OscarsWinners::getAge))
                 .get();
@@ -32,14 +33,52 @@ public class OscarService {
 
     }
 
-    public void printMostAwarded() {
+    public void printYoungest2() {
+        oscarsData.stream()
+                .collect(Collectors.groupingBy(d -> d.getAge()))
+                .entrySet().stream()
+                .min(Map.Entry.comparingByKey())
+                .get().getValue()
+                .stream()
+                .collect(Collectors.groupingBy(d -> d.getName()))
+                .forEach((key, value) ->
+                        System.out.printf("Nome: %-18s| Idade: %-3d| premios: %-3d%n", key, value.get(0).getAge(), value.size())
+                );
+    }
+    public void printYoungest3() {
+        oscarsData.stream()
+                .collect(Collectors.groupingBy(d -> d.getAge()))
+                .entrySet().stream()
+                .min(Map.Entry.comparingByKey())
+                .stream().collect(Collectors.toList())
+                .forEach(c -> c.getValue()
+                        .stream()
+                        .collect(Collectors.groupingBy(d-> d.getName()))
+                        .forEach((key, value) ->
+                                System.out.println(key +" - idade "+value.get(0).getAge() + "- premios na carreira "+value.size()))
+               );
+    }
+
+    public void printMostAwarded2() {
+        oscarsData.stream()
+                .collect(Collectors.groupingBy(OscarsWinners::getName))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue(Comparator.comparing(a-> a.size())))
+                .get()
+                .getValue()
+                .stream()
+                .collect(Collectors.groupingBy(c ->c.getName()))
+                .forEach((key, value)-> System.out.printf("Nome: %-18s| prêmios: %d%n", key, value.size()));
+    }
+
+    public void printMostAwarded1() {
         var oscMax = oscarsData.stream()
                 .collect(Collectors.groupingBy(OscarsWinners::getName))
                 .entrySet().stream()
                 .max(Map.Entry.comparingByValue(Comparator.comparing(a-> a.size())))
                 .get()
                 .getValue().size();
-        
+
         oscarsData.stream()
                 .collect(Collectors.groupingBy(OscarsWinners::getName))
                 .forEach((key, value) -> {

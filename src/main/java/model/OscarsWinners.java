@@ -42,10 +42,6 @@ public class OscarsWinners {
         return sex.getDescription();
     }
 
-    public void setSex(SexType sex) {
-        this.sex = sex;
-    }
-
     @Override
     public String toString() {
         return "DadosOscar{" +
